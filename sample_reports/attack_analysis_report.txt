@@ -1,0 +1,229 @@
+================================================================================
+WEB SERVER LOG SECURITY ANALYSIS REPORT
+================================================================================
+Analyst: JHC Kok
+Analysis Date: 2025-10-29 13:01:05
+Log File: sample_logs\attack_access.log
+Total Entries Analyzed: 64
+================================================================================
+
+EXECUTIVE SUMMARY
+--------------------------------------------------------------------------------
+Total Security Events Detected: 19
+  - Failed Login Attempts: 23
+  - SQL Injection Attempts: 0
+  - Suspicious User Agents: 16
+
+
+================================================================================
+FINDING 1: FAILED LOGIN ATTEMPTS
+================================================================================
+Severity: MEDIUM to HIGH (depending on frequency)
+Description: Multiple failed authentication attempts detected, indicating
+             possible brute-force attack or credential stuffing.
+
+
+IP Address: 192.168.1.105
+Total Failed Attempts: 8
+First Attempt: 27/Jan/2025:10:20:11 +0200
+Last Attempt: 27/Jan/2025:10:20:36 +0200
+Targeted Paths:
+  - 27/Jan/2025:10:20:11 +0200 | /admin/login | Status: 401
+  - 27/Jan/2025:10:20:15 +0200 | /admin/login | Status: 401
+  - 27/Jan/2025:10:20:18 +0200 | /admin/login | Status: 401
+  - 27/Jan/2025:10:20:22 +0200 | /admin/login | Status: 401
+  - 27/Jan/2025:10:20:25 +0200 | /admin/login | Status: 401
+  ... and 3 more attempts
+
+IP Address: 10.0.0.88
+Total Failed Attempts: 8
+First Attempt: 27/Jan/2025:10:28:05 +0200
+Last Attempt: 27/Jan/2025:10:28:33 +0200
+Targeted Paths:
+  - 27/Jan/2025:10:28:05 +0200 | /wp-admin/ | Status: 403
+  - 27/Jan/2025:10:28:09 +0200 | /wp-login.php | Status: 403
+  - 27/Jan/2025:10:28:13 +0200 | /wp-admin/ | Status: 403
+  - 27/Jan/2025:10:28:17 +0200 | /wp-login.php | Status: 403
+  - 27/Jan/2025:10:28:21 +0200 | /wp-admin/ | Status: 403
+  ... and 3 more attempts
+
+IP Address: 203.0.113.55
+Total Failed Attempts: 7
+First Attempt: 27/Jan/2025:10:39:10 +0200
+Last Attempt: 27/Jan/2025:10:39:40 +0200
+Targeted Paths:
+  - 27/Jan/2025:10:39:10 +0200 | /admin/login | Status: 401
+  - 27/Jan/2025:10:39:15 +0200 | /admin/login | Status: 401
+  - 27/Jan/2025:10:39:20 +0200 | /admin/login | Status: 401
+  - 27/Jan/2025:10:39:25 +0200 | /admin/login | Status: 401
+  - 27/Jan/2025:10:39:30 +0200 | /admin/login | Status: 401
+  ... and 2 more attempts
+
+RECOMMENDATIONS:
+  1. Implement rate limiting on authentication endpoints
+  2. Consider blocking IPs with excessive failed attempts
+  3. Enable multi-factor authentication (MFA)
+  4. Review authentication logs for successful logins from these IPs
+
+================================================================================
+FINDING 2: SQL INJECTION ATTEMPTS
+================================================================================
+No SQL injection patterns detected.
+
+================================================================================
+FINDING 3: SUSPICIOUS USER AGENTS
+================================================================================
+Severity: MEDIUM to HIGH
+Description: Requests from known security scanning tools or suspicious
+             automated tools detected. May indicate reconnaissance or
+             automated attack attempts.
+
+
+IP Address: 198.51.100.23
+Timestamp: 27/Jan/2025:10:30:15 +0200
+User Agent: sqlmap/1.7.2#stable (http://sqlmap.org)
+Request Path: /
+Detected Pattern: sqlmap
+----------------------------------------
+
+IP Address: 198.51.100.23
+Timestamp: 27/Jan/2025:10:30:18 +0200
+User Agent: sqlmap/1.7.2#stable (http://sqlmap.org)
+Request Path: /admin
+Detected Pattern: sqlmap
+----------------------------------------
+
+IP Address: 198.51.100.23
+Timestamp: 27/Jan/2025:10:30:22 +0200
+User Agent: sqlmap/1.7.2#stable (http://sqlmap.org)
+Request Path: /login
+Detected Pattern: sqlmap
+----------------------------------------
+
+IP Address: 198.51.100.23
+Timestamp: 27/Jan/2025:10:30:26 +0200
+User Agent: sqlmap/1.7.2#stable (http://sqlmap.org)
+Request Path: /products.php?id=1
+Detected Pattern: sqlmap
+----------------------------------------
+
+IP Address: 198.51.100.24
+Timestamp: 27/Jan/2025:10:31:05 +0200
+User Agent: Mozilla/5.00 (Nikto/2.1.6) (Evasions:None) (Test:map_codes)
+Request Path: /cgi-bin/
+Detected Pattern: nikto
+----------------------------------------
+
+IP Address: 198.51.100.24
+Timestamp: 27/Jan/2025:10:31:08 +0200
+User Agent: Mozilla/5.00 (Nikto/2.1.6) (Evasions:None) (Test:apache_expect_xss)
+Request Path: /admin/
+Detected Pattern: nikto
+----------------------------------------
+
+IP Address: 198.51.100.24
+Timestamp: 27/Jan/2025:10:31:12 +0200
+User Agent: Mozilla/5.00 (Nikto/2.1.6) (Evasions:None) (Test:outdated)
+Request Path: /phpmyadmin/
+Detected Pattern: nikto
+----------------------------------------
+
+IP Address: 198.51.100.25
+Timestamp: 27/Jan/2025:10:32:00 +0200
+User Agent: Mozilla/5.0 (compatible; Nmap Scripting Engine; https://nmap.org/book/nse.html)
+Request Path: /
+Detected Pattern: nmap
+----------------------------------------
+
+IP Address: 198.51.100.25
+Timestamp: 27/Jan/2025:10:32:02 +0200
+User Agent: Mozilla/5.0 (compatible; Nmap Scripting Engine; https://nmap.org/book/nse.html)
+Request Path: /sitemap.xml
+Detected Pattern: nmap
+----------------------------------------
+
+IP Address: 198.51.100.31
+Timestamp: 27/Jan/2025:10:37:00 +0200
+User Agent: python-requests/2.31.0
+Request Path: /robots.txt
+Detected Pattern: python-requests
+----------------------------------------
+
+IP Address: 198.51.100.31
+Timestamp: 27/Jan/2025:10:37:05 +0200
+User Agent: python-requests/2.31.0
+Request Path: /sitemap.xml
+Detected Pattern: python-requests
+----------------------------------------
+
+IP Address: 198.51.100.32
+Timestamp: 27/Jan/2025:10:37:30 +0200
+User Agent: Scrapy/2.11.0 (+https://scrapy.org)
+Request Path: /
+Detected Pattern: scrapy
+----------------------------------------
+
+IP Address: 198.51.100.33
+Timestamp: 27/Jan/2025:10:38:00 +0200
+User Agent: Metasploit/6.3.25
+Request Path: /admin/config.php
+Detected Pattern: metasploit
+----------------------------------------
+
+IP Address: 198.51.100.40
+Timestamp: 27/Jan/2025:10:44:00 +0200
+User Agent: Mozilla/5.0 (compatible; Baiduspider/2.0)
+Request Path: /
+Detected Pattern: spider
+----------------------------------------
+
+IP Address: 198.51.100.41
+Timestamp: 27/Jan/2025:10:44:30 +0200
+User Agent: Mozilla/5.0 (compatible; Googlebot/2.1)
+Request Path: /
+Detected Pattern: bot
+----------------------------------------
+
+IP Address: 198.51.100.42
+Timestamp: 27/Jan/2025:10:45:00 +0200
+User Agent: Acunetix Web Vulnerability Scanner
+Request Path: /admin/
+Detected Pattern: acunetix
+----------------------------------------
+
+RECOMMENDATIONS:
+  1. Block known scanner user agents at firewall/WAF level
+  2. Investigate whether scanning attempts were successful
+  3. Review vulnerability scan results and patch identified issues
+  4. Monitor these IPs for further malicious activity
+
+================================================================================
+ACCESS PATTERN ANALYSIS
+================================================================================
+
+Top 10 Most Active IP Addresses:
+----------------------------------------
+192.168.1.105        |     18 requests
+10.0.0.88            |      8 requests
+203.0.113.55         |      7 requests
+198.51.100.23        |      4 requests
+198.51.100.24        |      3 requests
+192.168.1.10         |      2 requests
+198.51.100.25        |      2 requests
+198.51.100.31        |      2 requests
+192.168.1.11         |      1 requests
+192.168.1.12         |      1 requests
+
+================================================================================
+CONCLUSION
+================================================================================
+This analysis identified 19 security-relevant events requiring
+immediate attention. Follow the recommendations provided above to mitigate
+identified risks.
+
+Priority Actions:
+  3. MEDIUM: Investigate scanning activity and patch vulnerabilities
+
+================================================================================
+END OF REPORT
+================================================================================
