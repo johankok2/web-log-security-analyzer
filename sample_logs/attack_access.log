@@ -1,0 +1,116 @@
+# Sample Web Server Access Log - Contains Simulated Security Threats
+# Filename: attack_access.log
+# Format: Apache/Nginx Common Log Format
+# Use this file to test the log analyzer tool
+
+# Normal traffic baseline
+192.168.1.10 - - [27/Jan/2025:10:15:23 +0200] "GET /index.html HTTP/1.1" 200 2326 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+192.168.1.10 - - [27/Jan/2025:10:15:24 +0200] "GET /style.css HTTP/1.1" 200 1256 "http://example.com/index.html" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+192.168.1.11 - - [27/Jan/2025:10:16:02 +0200] "GET /about.html HTTP/1.1" 200 3421 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"
+192.168.1.12 - - [27/Jan/2025:10:16:45 +0200] "GET /products.php HTTP/1.1" 200 4523 "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36"
+
+# THREAT 1: Failed Login Attempts - Brute Force Attack from 192.168.1.105
+192.168.1.105 - - [27/Jan/2025:10:20:11 +0200] "POST /admin/login HTTP/1.1" 401 512 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0"
+192.168.1.105 - - [27/Jan/2025:10:20:15 +0200] "POST /admin/login HTTP/1.1" 401 512 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0"
+192.168.1.105 - - [27/Jan/2025:10:20:18 +0200] "POST /admin/login HTTP/1.1" 401 512 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0"
+192.168.1.105 - - [27/Jan/2025:10:20:22 +0200] "POST /admin/login HTTP/1.1" 401 512 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0"
+192.168.1.105 - - [27/Jan/2025:10:20:25 +0200] "POST /admin/login HTTP/1.1" 401 512 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0"
+192.168.1.105 - - [27/Jan/2025:10:20:29 +0200] "POST /admin/login HTTP/1.1" 401 512 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0"
+192.168.1.105 - - [27/Jan/2025:10:20:33 +0200] "POST /admin/login HTTP/1.1" 401 512 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0"
+192.168.1.105 - - [27/Jan/2025:10:20:36 +0200] "POST /admin/login HTTP/1.1" 401 512 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0"
+
+# More normal traffic
+192.168.1.13 - - [27/Jan/2025:10:21:00 +0200] "GET /contact.html HTTP/1.1" 200 1823 "-" "Mozilla/5.0 (iPad; CPU OS 16_0 like Mac OS X) AppleWebKit/605.1.15"
+192.168.1.14 - - [27/Jan/2025:10:22:15 +0200] "POST /contact/submit HTTP/1.1" 200 256 "http://example.com/contact.html" "Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X)"
+
+# THREAT 2: SQL Injection Attempts from 203.0.113.42 - - [27/Jan/2025:10:25:35 +0200] "GET /products.php?id=1 AND 1=1 HTTP/1.1" 200 4523 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0"
+203.0.113.42 - - [27/Jan/2025:10:25:41 +0200] "GET /products.php?id=1 AND 1=2 HTTP/1.1" 200 128 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0"
+203.0.113.42 - - [27/Jan/2025:10:25:48 +0200] "GET /users.php?id=1' UNION SELECT NULL,NULL,NULL-- HTTP/1.1" 500 1024 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0"
+
+# Normal traffic continues
+192.168.1.15 - - [27/Jan/2025:10:26:00 +0200] "GET /blog/article-1 HTTP/1.1" 200 5621 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Firefox/121.0"
+192.168.1.16 - - [27/Jan/2025:10:27:12 +0200] "GET /images/logo.png HTTP/1.1" 200 15234 "http://example.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)"
+
+# THREAT 3: More Failed Logins from different IP - 10.0.0.88
+10.0.0.88 - - [27/Jan/2025:10:28:05 +0200] "POST /wp-admin/ HTTP/1.1" 403 789 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0"
+10.0.0.88 - - [27/Jan/2025:10:28:09 +0200] "POST /wp-login.php HTTP/1.1" 403 789 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0"
+10.0.0.88 - - [27/Jan/2025:10:28:13 +0200] "POST /wp-admin/ HTTP/1.1" 403 789 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0"
+10.0.0.88 - - [27/Jan/2025:10:28:17 +0200] "POST /wp-login.php HTTP/1.1" 403 789 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0"
+10.0.0.88 - - [27/Jan/2025:10:28:21 +0200] "POST /wp-admin/ HTTP/1.1" 403 789 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0"
+10.0.0.88 - - [27/Jan/2025:10:28:25 +0200] "POST /wp-login.php HTTP/1.1" 403 789 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0"
+10.0.0.88 - - [27/Jan/2025:10:28:29 +0200] "POST /admin/ HTTP/1.1" 403 789 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0"
+10.0.0.88 - - [27/Jan/2025:10:28:33 +0200] "POST /admin/signin HTTP/1.1" 403 789 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0"
+
+# THREAT 4: Suspicious User Agents - Security Scanning Tools
+198.51.100.23 - - [27/Jan/2025:10:30:15 +0200] "GET / HTTP/1.1" 200 2326 "-" "sqlmap/1.7.2#stable (http://sqlmap.org)"
+198.51.100.23 - - [27/Jan/2025:10:30:18 +0200] "GET /admin HTTP/1.1" 404 512 "-" "sqlmap/1.7.2#stable (http://sqlmap.org)"
+198.51.100.23 - - [27/Jan/2025:10:30:22 +0200] "GET /login HTTP/1.1" 404 512 "-" "sqlmap/1.7.2#stable (http://sqlmap.org)"
+198.51.100.23 - - [27/Jan/2025:10:30:26 +0200] "GET /products.php?id=1 HTTP/1.1" 200 4523 "-" "sqlmap/1.7.2#stable (http://sqlmap.org)"
+
+# Nikto scanner detected
+198.51.100.24 - - [27/Jan/2025:10:31:05 +0200] "GET /cgi-bin/ HTTP/1.1" 404 512 "-" "Mozilla/5.00 (Nikto/2.1.6) (Evasions:None) (Test:map_codes)"
+198.51.100.24 - - [27/Jan/2025:10:31:08 +0200] "GET /admin/ HTTP/1.1" 404 512 "-" "Mozilla/5.00 (Nikto/2.1.6) (Evasions:None) (Test:apache_expect_xss)"
+198.51.100.24 - - [27/Jan/2025:10:31:12 +0200] "GET /phpmyadmin/ HTTP/1.1" 404 512 "-" "Mozilla/5.00 (Nikto/2.1.6) (Evasions:None) (Test:outdated)"
+
+# Nmap scanner
+198.51.100.25 - - [27/Jan/2025:10:32:00 +0200] "GET / HTTP/1.1" 200 2326 "-" "Mozilla/5.0 (compatible; Nmap Scripting Engine; https://nmap.org/book/nse.html)"
+198.51.100.25 - - [27/Jan/2025:10:32:02 +0200] "GET /sitemap.xml HTTP/1.1" 404 512 "-" "Mozilla/5.0 (compatible; Nmap Scripting Engine; https://nmap.org/book/nse.html)"
+
+# Normal traffic
+192.168.1.17 - - [27/Jan/2025:10:33:00 +0200] "GET /products/category/electronics HTTP/1.1" 200 8234 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/120.0"
+192.168.1.18 - - [27/Jan/2025:10:34:15 +0200] "GET /api/products/list HTTP/1.1" 200 15234 "-" "Mozilla/5.0 (X11; Linux x86_64) Firefox/121.0"
+
+# THREAT 5: High volume requests from single IP (potential DDoS or scanning)
+# 192.168.1.105 continues aggressive activity
+192.168.1.105 - - [27/Jan/2025:10:35:01 +0200] "GET / HTTP/1.1" 200 2326 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0"
+192.168.1.105 - - [27/Jan/2025:10:35:02 +0200] "GET /about HTTP/1.1" 200 3421 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0"
+192.168.1.105 - - [27/Jan/2025:10:35:03 +0200] "GET /products HTTP/1.1" 200 4523 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0"
+192.168.1.105 - - [27/Jan/2025:10:35:04 +0200] "GET /contact HTTP/1.1" 200 1823 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0"
+192.168.1.105 - - [27/Jan/2025:10:35:05 +0200] "GET /blog HTTP/1.1" 200 5621 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0"
+192.168.1.105 - - [27/Jan/2025:10:35:06 +0200] "GET /services HTTP/1.1" 200 2834 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0"
+192.168.1.105 - - [27/Jan/2025:10:35:07 +0200] "GET /portfolio HTTP/1.1" 200 6234 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0"
+192.168.1.105 - - [27/Jan/2025:10:35:08 +0200] "GET /careers HTTP/1.1" 200 3456 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0"
+192.168.1.105 - - [27/Jan/2025:10:35:09 +0200] "GET /faq HTTP/1.1" 200 2145 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0"
+192.168.1.105 - - [27/Jan/2025:10:35:10 +0200] "GET /terms HTTP/1.1" 200 4567 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0"
+
+# More SQL injection attempts from different IP
+198.51.100.30 - - [27/Jan/2025:10:36:15 +0200] "GET /search.php?q=<script>alert('XSS')</script> HTTP/1.1" 200 1234 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+198.51.100.30 - - [27/Jan/2025:10:36:20 +0200] "GET /user.php?id=1' AND SLEEP(5)-- HTTP/1.1" 200 512 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+198.51.100.30 - - [27/Jan/2025:10:36:28 +0200] "GET /products.php?id=1' UNION SELECT version(),database(),user()-- HTTP/1.1" 500 1024 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+
+# More suspicious user agents
+198.51.100.31 - - [27/Jan/2025:10:37:00 +0200] "GET /robots.txt HTTP/1.1" 404 512 "-" "python-requests/2.31.0"
+198.51.100.31 - - [27/Jan/2025:10:37:05 +0200] "GET /sitemap.xml HTTP/1.1" 404 512 "-" "python-requests/2.31.0"
+198.51.100.32 - - [27/Jan/2025:10:37:30 +0200] "GET / HTTP/1.1" 200 2326 "-" "Scrapy/2.11.0 (+https://scrapy.org)"
+198.51.100.33 - - [27/Jan/2025:10:38:00 +0200] "GET /admin/config.php HTTP/1.1" 404 512 "-" "Metasploit/6.3.25"
+
+# Additional failed login attempts from another IP
+203.0.113.55 - - [27/Jan/2025:10:39:10 +0200] "POST /admin/login HTTP/1.1" 401 512 "-" "Mozilla/5.0 (X11; Linux x86_64)"
+203.0.113.55 - - [27/Jan/2025:10:39:15 +0200] "POST /admin/login HTTP/1.1" 401 512 "-" "Mozilla/5.0 (X11; Linux x86_64)"
+203.0.113.55 - - [27/Jan/2025:10:39:20 +0200] "POST /admin/login HTTP/1.1" 401 512 "-" "Mozilla/5.0 (X11; Linux x86_64)"
+203.0.113.55 - - [27/Jan/2025:10:39:25 +0200] "POST /admin/login HTTP/1.1" 401 512 "-" "Mozilla/5.0 (X11; Linux x86_64)"
+203.0.113.55 - - [27/Jan/2025:10:39:30 +0200] "POST /admin/login HTTP/1.1" 401 512 "-" "Mozilla/5.0 (X11; Linux x86_64)"
+203.0.113.55 - - [27/Jan/2025:10:39:35 +0200] "POST /admin/login HTTP/1.1" 401 512 "-" "Mozilla/5.0 (X11; Linux x86_64)"
+203.0.113.55 - - [27/Jan/2025:10:39:40 +0200] "POST /admin/login HTTP/1.1" 401 512 "-" "Mozilla/5.0 (X11; Linux x86_64)"
+
+# Normal legitimate traffic continues
+192.168.1.19 - - [27/Jan/2025:10:40:00 +0200] "GET /products/item/12345 HTTP/1.1" 200 3421 "-" "Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X)"
+192.168.1.20 - - [27/Jan/2025:10:41:15 +0200] "POST /cart/add HTTP/1.1" 200 256 "http://example.com/products/item/12345" "Mozilla/5.0 (iPhone; CPU iPhone OS 16_0)"
+192.168.1.21 - - [27/Jan/2025:10:42:30 +0200] "GET /checkout HTTP/1.1" 200 4523 "-" "Mozilla/5.0 (iPad; CPU OS 16_0 like Mac OS X)"
+192.168.1.22 - - [27/Jan/2025:10:43:45 +0200] "POST /checkout/confirm HTTP/1.1" 200 1024 "http://example.com/checkout" "Mozilla/5.0 (iPad; CPU OS 16_0)"
+
+# More automated tool traffic
+198.51.100.40 - - [27/Jan/2025:10:44:00 +0200] "GET / HTTP/1.1" 200 2326 "-" "Mozilla/5.0 (compatible; Baiduspider/2.0)"
+198.51.100.41 - - [27/Jan/2025:10:44:30 +0200] "GET / HTTP/1.1" 200 2326 "-" "Mozilla/5.0 (compatible; Googlebot/2.1)"
+198.51.100.42 - - [27/Jan/2025:10:45:00 +0200] "GET /admin/ HTTP/1.1" 404 512 "-" "Acunetix Web Vulnerability Scanner"
+
+# End of sample log - Total entries: ~75 lines
+# Threats present:
+# - 3 IPs with multiple failed login attempts (192.168.1.105, 10.0.0.88, 203.0.113.55)
+# - 9 SQL injection attempts from 2 IPs
+# - 15+ suspicious user agent detections
+# - 1 IP with abnormally high request volume0.113.42
+203.0.113.42 - - [27/Jan/2025:10:25:18 +0200] "GET /products.php?id=1' OR '1'='1 HTTP/1.1" 500 1024 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0"
+203.0.113.42 - - [27/Jan/2025:10:25:22 +0200] "GET /products.php?id=1' UNION SELECT username,password FROM users-- HTTP/1.1" 500 1024 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0"
+203.0.113.42 - - [27/Jan/2025:10:25:28 +0200] "GET /search.php?q=test'; DROP TABLE products;-- HTTP/1.1" 500 1024 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0"
+203.
