@@ -1,0 +1,3 @@
+# Web Server Log Security Analyzer
+# Python Dependencies: None (uses standard library only)
+# Minimum Python version: 3.8+
