@@ -240,8 +240,8 @@ This project is part of a larger cybersecurity portfolio:
 **Author:** Johan Hendrik Christoffel Kok (JHC Kok)  
 **Email:** jhckokpretoria@gmail.com  
 **Location:** Centurion, Gauteng, South Africa  
-**GitHub:** [Your GitHub Profile]  
-**LinkedIn:** [Your LinkedIn Profile]
+**GitHub:** https://github.com/johankok2  
+**LinkedIn:** https://www.linkedin.com/in/johan-kok-b7b7a817a/
 
 ---
 
