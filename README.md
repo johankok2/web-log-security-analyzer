@@ -241,7 +241,7 @@ This project is part of a larger cybersecurity portfolio:
 **Email:** jhckokpretoria@gmail.com  
 **Location:** Centurion, Gauteng, South Africa  
 **GitHub:** https://github.com/johankok2  
-**LinkedIn:** https://www.linkedin.com/in/johan-kok-b7b7a817a/
+**LinkedIn:** https://www.linkedin.com/in/johankok-cybersecurity/
 
 ---
 
